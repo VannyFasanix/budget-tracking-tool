@@ -1,18 +1,15 @@
 package com.budgettrackingtool.bttbackend.controllers;
 
 import com.budgettrackingtool.bttbackend.entities.Profile;
-import com.budgettrackingtool.bttbackend.repositories.RepositoryClass;
+import com.budgettrackingtool.bttbackend.repositories.RepositoryProfiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.security.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -22,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ProfilesController {
 
     @Autowired
-    private RepositoryClass repository;
+    private RepositoryProfiles repository;
 
 
     @GetMapping("/profile/{id}")

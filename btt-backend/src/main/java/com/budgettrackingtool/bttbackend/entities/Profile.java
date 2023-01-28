@@ -8,13 +8,14 @@ public class Profile {
 
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
     private String email;
-    @Column(name = "signature")
+
     private String signature;
+    private String username;
+
 
     public Profile() {
     }
@@ -43,12 +44,11 @@ public class Profile {
         this.signature = signature;
     }
 
-    @Override
-    public String toString() {
-        return "Profile{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", signature='" + signature + '\'' +
-                '}';
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
