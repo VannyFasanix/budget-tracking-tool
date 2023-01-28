@@ -34,14 +34,6 @@ public class Category {
         this.name = name;
     }
 
-    public Expense getExpense() {
-        return expense;
-    }
-
-    public void setExpense(Expense expense) {
-        this.expense = expense;
-    }
-
     @Override
     public String toString() {
         return "Category{" +
