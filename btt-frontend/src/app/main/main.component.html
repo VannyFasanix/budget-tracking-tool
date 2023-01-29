@@ -1,8 +1,9 @@
-<div class="grid gap-4 grid-cols-5 grid-rows-3">
+<div class="grid gap-4 grid-cols-7 grid-rows-3">
   <app-sidebar></app-sidebar>
 
   <!-- ROUTES -->
 
   <app-expenses-table *ngIf="selectedFlag == 'expenses-table'"></app-expenses-table>
   <app-incomes-table *ngIf="selectedFlag == 'incomes-table'"></app-incomes-table>
+  <app-categories-setup *ngIf="selectedFlag == 'categories-setup'"></app-categories-setup>
 </div>

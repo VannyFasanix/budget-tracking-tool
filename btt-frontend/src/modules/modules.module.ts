@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { EntitiesModule } from './entities/entities.module';
 import { ExpensesTableComponent } from './components/expenses-table/expenses-table.component';
 import { IncomesTableComponent } from './components/incomes-table/incomes-table.component'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { CategoriesSetupComponent } from './components/categories-setup/categories-setup.component'
 
 
 
 @NgModule({
   declarations: [
     ExpensesTableComponent,
-    IncomesTableComponent
+    IncomesTableComponent,
+    CategoriesSetupComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http'
   ],
   exports: [
     ExpensesTableComponent,
-    IncomesTableComponent
+    IncomesTableComponent,
+    CategoriesSetupComponent
   ]
 })
 export class ModulesModule { }

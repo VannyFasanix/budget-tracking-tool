@@ -1,5 +1,6 @@
 export class Categories
 {
   id!: number;
-  name!: string
+  name!: string;
+  note!: string;
 }
