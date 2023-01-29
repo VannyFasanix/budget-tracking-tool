@@ -17,4 +17,8 @@ export class SidebarComponent implements OnInit {
     this.config.nextFlagChange(flag)
   }
 
+  public get innerWidth() {
+    return window.innerWidth;
+  }
+
 }

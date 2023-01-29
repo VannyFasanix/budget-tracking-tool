@@ -3,7 +3,9 @@
 
   <!-- ROUTES -->
 
-  <app-expenses-table *ngIf="selectedFlag == 'expenses-table'"></app-expenses-table>
-  <app-incomes-table *ngIf="selectedFlag == 'incomes-table'"></app-incomes-table>
-  <app-categories-setup *ngIf="selectedFlag == 'categories-setup'"></app-categories-setup>
+  <div class="py-10">
+    <app-expenses-table *ngIf="selectedFlag == 'expenses-table'"></app-expenses-table>
+    <app-incomes-table *ngIf="selectedFlag == 'incomes-table'"></app-incomes-table>
+    <app-categories-setup *ngIf="selectedFlag == 'categories-setup'"></app-categories-setup>
+  </div>
 </div>

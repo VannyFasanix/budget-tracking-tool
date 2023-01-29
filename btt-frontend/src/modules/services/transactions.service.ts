@@ -19,5 +19,16 @@ export class TransactionsService {
     this.http.get(this.config.url+'categories').subscribe((res: any) => {
       this.categories = res._embedded.categoryList
     })
+
+    this.http.get(this.config.url+'expenses').subscribe((res: any) => {
+      this.expenses = res._embedded.expenseList
+    })
+
+  }
+
+  public post(url: string, body: any) {
+    this.http.post(url, body).subscribe((res: any) => {
+      console.log(res)
+    })
   }
 }
