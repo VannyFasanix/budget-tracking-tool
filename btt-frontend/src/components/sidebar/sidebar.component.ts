@@ -17,8 +17,26 @@ export class SidebarComponent implements OnInit {
     this.config.nextFlagChange(flag)
   }
 
-  public get innerWidth() {
+  public get innerWidth(): number {
     return window.innerWidth;
+  }
+
+  public switchTheme(): void {
+    const element = document.getElementById('index-page')!
+
+    if(element.classList.value == 'dark') {
+      element.classList.remove('dark');
+    } else {
+      element.classList.add('dark');
+    }
+
+    const style = document.documentElement.style.setProperty('$bg-screen-color',"--tw-bg-opacity: 1; background-color: rgba(17, 24, 39, var(--tw-bg-opacity))");
+
+  }
+
+  public checkTheme(): boolean {
+    const element = document.getElementById('index-page')!
+    return element.classList.value == 'dark'
   }
 
 }

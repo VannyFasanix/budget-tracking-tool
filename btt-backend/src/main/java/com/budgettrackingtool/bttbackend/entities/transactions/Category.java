@@ -12,11 +12,11 @@ public class Category {
     @Column(name = "id")
     private Long id;
     private String name;
+
+    private String notes;
     @OneToOne(mappedBy = "category_id", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, optional = false)
     private Expense expense;
-
-    public Category() {}
 
     public Long getId() {
         return id;
@@ -34,12 +34,20 @@ public class Category {
         this.name = name;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", expense=" + expense +
+                ", notes='" + notes + '\'' +
                 '}';
     }
 }

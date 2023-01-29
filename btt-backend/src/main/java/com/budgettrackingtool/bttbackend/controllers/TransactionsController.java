@@ -4,9 +4,11 @@ import com.budgettrackingtool.bttbackend.entities.transactions.Category;
 import com.budgettrackingtool.bttbackend.entities.transactions.Expense;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryCategories;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryExpenses;
+import jakarta.persistence.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -84,5 +86,12 @@ public class TransactionsController {
     public Category postNewCategory(@RequestBody Category c) {
         return repositoryC.save(c);
     }
+
+    /**
+    @PutMapping("/categories/{id}")
+    public Category updateCategory(@RequestBody Category c, @PathVariable Long id) {
+
+    }
+    */
 
 }
