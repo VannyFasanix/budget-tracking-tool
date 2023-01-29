@@ -35,7 +35,7 @@ public class TransactionsController {
                 linkTo(methodOn(TransactionsController.class).everyExpense()).withRel("expenses"));
     }
 
-    @GetMapping("/expensess")
+    @GetMapping("/expenses")
     CollectionModel<EntityModel<Expense>> everyExpense() {
 
         List<EntityModel<Expense>> expense = repositoryE.findAll().stream()
@@ -45,11 +45,6 @@ public class TransactionsController {
                 .collect(Collectors.toList());
 
         return CollectionModel.of(expense, linkTo(methodOn(TransactionsController.class).everyExpense()).withSelfRel());
-    }
-
-    @GetMapping("/expenses")
-    public List<Expense> getExpenses() {
-        return repositoryE.findAll();
     }
 
     @PostMapping("/expenses")

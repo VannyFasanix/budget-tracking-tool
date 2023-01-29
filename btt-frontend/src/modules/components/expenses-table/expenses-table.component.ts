@@ -20,7 +20,7 @@ export class ExpensesTableComponent implements OnInit {
     // })
 
     this.http.get(this.config.url+'categories').subscribe((res: any) => {
-      console.log(res._embedded)
+      this.response = res._embedded.categoryList
     })
 
   }
