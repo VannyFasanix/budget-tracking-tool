@@ -27,17 +27,36 @@ export class CategoriesSetupComponent implements OnInit {
 
   }
 
-  public openCategoryDialog() {
+  public openCategoryDialog(option: string) {
+
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
       height: '400px',
       width: '500px',
       hasBackdrop: true,
       disableClose: false,
-      panelClass: 'mat-dialog-custom-white'
+      panelClass: 'mat-dialog-custom-white',
+      data: {
+        categories: option == 'update' ? this.categories : [],
+        request: option
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      this.transaction.postTransaction('categories',result)
+      if(result)
+        if(result.request == 'add') {
+          this.transaction.postTransaction('categories',result.data)
+        } else if(result.request == 'update') {
+          const id = result.data.category;
+          const body = {
+            name: result.data.name,
+            notes: result.data.notes
+          }
+          this.transaction.updateTransaction('categories', id, body)
+        } else if(result.request == 'delete') {
+          const id = result.data.category;
+          this.transaction.deleteTransaction('categories', id)
+        }
+
     });
   }
 

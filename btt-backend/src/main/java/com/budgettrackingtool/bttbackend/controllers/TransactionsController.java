@@ -2,12 +2,15 @@ package com.budgettrackingtool.bttbackend.controllers;
 
 import com.budgettrackingtool.bttbackend.entities.transactions.Category;
 import com.budgettrackingtool.bttbackend.entities.transactions.Expense;
+import com.budgettrackingtool.bttbackend.exceptions.InvalidParametersException;
+import com.budgettrackingtool.bttbackend.exceptions.NotFoundException;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryCategories;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryExpenses;
 import jakarta.persistence.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,9 @@ public class TransactionsController {
 
     @Autowired
     private RepositoryExpenses repositoryE;
+
+    @Autowired
+    private RepositoryCategories repositoryC;
 
 
     //EXPENSES
@@ -55,9 +61,6 @@ public class TransactionsController {
     }
 
 
-    @Autowired
-    private RepositoryCategories repositoryC;
-
     //CATEGORIES
     @GetMapping("/categories/{id}")
     EntityModel<Optional<Category>> singleCategory(@PathVariable Long id) {
@@ -83,15 +86,39 @@ public class TransactionsController {
     }
 
     @PostMapping("/categories")
-    public Category postNewCategory(@RequestBody Category c) {
-        return repositoryC.save(c);
+    public ResponseEntity postNewCategory(@RequestBody Category c) {
+
+        if(c.getName() == "") {
+            return new ResponseEntity<>("Invalid parameters provided for entity Category", HttpStatus.BAD_REQUEST);
+        }
+
+        repositoryC.save(c);
+        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
+
     }
 
-    /**
+
     @PutMapping("/categories/{id}")
-    public Category updateCategory(@RequestBody Category c, @PathVariable Long id) {
+    public ResponseEntity<Category> updateCategory(@PathVariable long id,@RequestBody Category category) {
+        Category updateCategory = repositoryC.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "category"));
 
+        updateCategory.setName(category.getName());
+        updateCategory.setNotes(category.getNotes());
+
+        repositoryC.save(updateCategory);
+
+        return ResponseEntity.ok(updateCategory);
     }
-    */
+
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<Category> deleteCategory(@PathVariable long id) {
+        Category deleteCategory = repositoryC.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "category"));
+
+        repositoryC.delete(deleteCategory);
+
+        return ResponseEntity.ok(deleteCategory);
+    }
 
 }

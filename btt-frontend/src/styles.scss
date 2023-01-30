@@ -52,3 +52,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-dialog-container {
   background-color: white !important;
 }
+
+.bg-default {
+  background-color: #34A853;
+
+  &:hover {
+    background-color: #2d8d47;
+  }
+}
+
+.dark .bg-default {
+  background-color: #34A853;
+
+  &:hover {
+    background-color: #2d8d47;
+  }
+}
