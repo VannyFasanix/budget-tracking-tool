@@ -14,7 +14,7 @@ public class Category {
     private String name;
 
     private String notes;
-    @OneToOne(mappedBy = "category_id", cascade = CascadeType.ALL,
+    @OneToOne(mappedBy = "category",
             fetch = FetchType.LAZY, optional = false)
     private Expense expense;
 

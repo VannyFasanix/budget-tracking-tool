@@ -55,6 +55,7 @@ mat-dialog-container {
 
 .bg-default {
   background-color: #34A853;
+  color: white;
 
   &:hover {
     background-color: #2d8d47;
@@ -63,8 +64,13 @@ mat-dialog-container {
 
 .dark .bg-default {
   background-color: #34A853;
+  color: white;
 
   &:hover {
     background-color: #2d8d47;
   }
+}
+
+.href-text {
+  color: #34A853;
 }

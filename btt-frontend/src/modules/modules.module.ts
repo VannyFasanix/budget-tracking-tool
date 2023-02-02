@@ -5,8 +5,8 @@ import { ExpensesTableComponent } from './components/expenses-table/expenses-tab
 import { IncomesTableComponent } from './components/incomes-table/incomes-table.component'
 import { HttpClientModule } from '@angular/common/http';
 import { CategoriesSetupComponent } from './components/categories-setup/categories-setup.component';
-import { CategoryDialogComponent } from './components/categories-setup/category-dialog/category-dialog.component'
 import { SharedModuleModule } from 'src/app/shared-module/shared-module.module';
+import { ComponentsModule } from 'src/components/components.module';
 
 
 
@@ -14,13 +14,13 @@ import { SharedModuleModule } from 'src/app/shared-module/shared-module.module';
   declarations: [
     ExpensesTableComponent,
     IncomesTableComponent,
-    CategoriesSetupComponent,
-    CategoryDialogComponent,
+    CategoriesSetupComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
-    SharedModuleModule
+    SharedModuleModule,
+    ComponentsModule
   ],
   exports: [
     ExpensesTableComponent,

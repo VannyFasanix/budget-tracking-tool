@@ -12,11 +12,13 @@ export class TransactionsService {
 
   categories: Categories[] = [];
   expenses: Expenses[] = [];
-  public categoryAdded!: Subject<boolean>;
+
+  private _categoriesModified = new Subject<boolean>();
+  public categoriesModified = this._categoriesModified.asObservable();
 
   constructor(private http: HttpClient,
               private config: ConfigService) {
-                this.categoryAdded = new Subject<boolean>();
+
               }
 
   public setupTransactions(): any {
@@ -24,46 +26,35 @@ export class TransactionsService {
     this.getExpenses();
   }
 
-  public postTransaction(url: string, body: Categories | Expenses) {
-    this.http.post(this.config.url+url, body).subscribe((res: any) => {
-      this.categories.push(body)
-      this.categoryAdded.next(true)
+  public postCategory(body: Categories | Expenses) {
+    this.http.post(this.config.url+"categories", body).subscribe((res: any) => {
+      this._categoriesModified.next(true)
     })
   }
 
   public getCategories(): any {
     this.http.get(this.config.url+'categories').subscribe((res: any) => {
-      this.categories = res._embedded.categoryList
+      this.categories = res
     })
   }
 
   public getExpenses(): any {
     this.http.get(this.config.url+'expenses').subscribe((res: any) => {
-      this.expenses = res._embedded.expenseList
+      this.expenses = res
     })
   }
 
-  public updateTransaction(url: string, id: number, body: any): any {
-    this.http.put(this.config.url+url+`/${id}`, body).subscribe((res: any) => {
-      this._updateProperties(this.categories, id, body);
-      this.categoryAdded.next(true)
+  public updateCategory(id: number, body: any): any {
+    this.http.put(this.config.url+"categories"+`/${id}`, body).subscribe((res: any) => {
+      this._categoriesModified.next(true)
     })
   }
 
-  public deleteTransaction(url: string, id: number): any {
-    this.http.delete(this.config.url+url+`/${id}`).subscribe((res: any) => {
+  public deleteCategory(id: number): any {
+    this.http.delete(this.config.url+"categories"+`/${id}`).subscribe((res: any) => {
       this.categories.splice(this.categories.find((c: Categories) => c.id == id)?.id!, 1)
-      this.categoryAdded.next(true)
+      this._categoriesModified.next(true)
     })
   }
 
-  private _updateProperties(array: any[], id: number, body: any): void {
-    const idx = array.findIndex((e: any) => e.id == id)
-    const keys:  any = Object.keys(body)
-    keys.map((key: any) => {
-      if(body[key]) {
-        array[idx][key] = body[key]
-      }
-    })
-  }
 }

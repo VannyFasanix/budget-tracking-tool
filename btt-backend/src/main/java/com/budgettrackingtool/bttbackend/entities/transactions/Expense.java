@@ -18,8 +18,8 @@ public class Expense {
     private Float amount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Category category_id;
+    @JoinColumn(name = "id",referencedColumnName="id")
+    private Category category;
     private String notes;
 
     public Expense(){}
@@ -56,12 +56,12 @@ public class Expense {
         this.amount = amount;
     }
 
-    public Category getCategory_id() {
-        return category_id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory_id(Category category_id) {
-        this.category_id = category_id;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getNotes() {
@@ -79,7 +79,7 @@ public class Expense {
                 ", date=" + date +
                 ", store='" + store + '\'' +
                 ", amount=" + amount +
-                ", category_id=" + category_id +
+                ", category_id=" + category +
                 ", notes='" + notes + '\'' +
                 '}';
     }

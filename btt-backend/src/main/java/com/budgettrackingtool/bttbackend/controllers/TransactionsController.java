@@ -34,25 +34,20 @@ public class TransactionsController {
 
     //EXPENSES
     @GetMapping("/expenses/{id}")
-    EntityModel<Optional<Expense>> singleExpense(@PathVariable Long id) {
+    Expense singleExpense(@PathVariable Long id) {
 
-        Optional<Expense> expense = repositoryE.findById(id);
+        Expense expense = repositoryE.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "expense"));
 
-        return EntityModel.of(expense, //
-                linkTo(methodOn(TransactionsController.class).singleExpense(id)).withSelfRel(),
-                linkTo(methodOn(TransactionsController.class).everyExpense()).withRel("expenses"));
+        return expense;
     }
 
     @GetMapping("/expenses")
-    CollectionModel<EntityModel<Expense>> everyExpense() {
+    List<Expense> everyExpense() {
 
-        List<EntityModel<Expense>> expense = repositoryE.findAll().stream()
-                .map(p -> EntityModel.of(p,
-                        linkTo(methodOn(TransactionsController.class).singleExpense(p.getId())).withSelfRel(),
-                        linkTo(methodOn(TransactionsController.class).everyExpense()).withRel("expenses")))
-                .collect(Collectors.toList());
+        List<Expense> expenses = repositoryE.findAll();
 
-        return CollectionModel.of(expense, linkTo(methodOn(TransactionsController.class).everyExpense()).withSelfRel());
+        return expenses;
     }
 
     @PostMapping("/expenses")
@@ -63,26 +58,21 @@ public class TransactionsController {
 
     //CATEGORIES
     @GetMapping("/categories/{id}")
-    EntityModel<Optional<Category>> singleCategory(@PathVariable Long id) {
+    Category singleCategory(@PathVariable Long id) {
 
-        Optional<Category> category = repositoryC.findById(id);
+        Category category = repositoryC.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "category"));
 
-        return EntityModel.of(category, //
-                linkTo(methodOn(TransactionsController.class).singleCategory(id)).withSelfRel(),
-                linkTo(methodOn(TransactionsController.class).everyCategory()).withRel("categories"));
+        return category;
     }
 
 
     @GetMapping("/categories")
-    CollectionModel<EntityModel<Category>> everyCategory() {
+    List<Category> everyCategory() {
 
-        List<EntityModel<Category>> category = repositoryC.findAll().stream()
-                .map(p -> EntityModel.of(p,
-                        linkTo(methodOn(TransactionsController.class).singleCategory(p.getId())).withSelfRel(),
-                        linkTo(methodOn(TransactionsController.class).everyCategory()).withRel("categories")))
-                .collect(Collectors.toList());
+        List<Category> categories = repositoryC.findAll();
 
-        return CollectionModel.of(category, linkTo(methodOn(TransactionsController.class).everyCategory()).withSelfRel());
+        return categories;
     }
 
     @PostMapping("/categories")
@@ -116,7 +106,7 @@ public class TransactionsController {
         Category deleteCategory = repositoryC.findById(id)
                 .orElseThrow(() -> new NotFoundException(id, "category"));
 
-        repositoryC.delete(deleteCategory);
+        repositoryC.deleteById(id);
 
         return ResponseEntity.ok(deleteCategory);
     }

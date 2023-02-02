@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Categories } from 'src/modules/entities/categories';
 import { TransactionsService } from 'src/modules/services/transactions.service';
-import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
+import { DialogComponent } from '../../../components/dialog/dialog.component';
 
 
 @Component({
@@ -13,6 +13,7 @@ import { CategoryDialogComponent } from './category-dialog/category-dialog.compo
 export class CategoriesSetupComponent implements OnInit {
 
   categories: Categories[] = [];
+  tableEntities!: {headers: any[], rows: any[]};
 
   constructor(private transaction: TransactionsService,
               public dialog: MatDialog) { }
@@ -21,22 +22,26 @@ export class CategoriesSetupComponent implements OnInit {
 
     this.categories = this.transaction.categories;
 
-    this.transaction.categoryAdded.subscribe((res: boolean) => {
+    this.transaction.categoriesModified.subscribe((res: boolean) => {
       this.categories = this.transaction.categories;
     })
 
+    this.tableEntities = {
+      headers: Object.keys(this.categories[0]),
+      rows: this.categories
+    }
   }
 
   public openCategoryDialog(option: string) {
 
-    const dialogRef = this.dialog.open(CategoryDialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       height: '400px',
       width: '500px',
       hasBackdrop: true,
       disableClose: false,
       panelClass: 'mat-dialog-custom-white',
       data: {
-        categories: option == 'update' ? this.categories : [],
+        categories: option != 'add' ? this.categories : [],
         request: option
       }
     });
@@ -44,17 +49,17 @@ export class CategoriesSetupComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result)
         if(result.request == 'add') {
-          this.transaction.postTransaction('categories',result.data)
+          this.transaction.postCategory(result.data)
         } else if(result.request == 'update') {
           const id = result.data.category;
           const body = {
             name: result.data.name,
             notes: result.data.notes
           }
-          this.transaction.updateTransaction('categories', id, body)
+          this.transaction.updateCategory(id, body)
         } else if(result.request == 'delete') {
           const id = result.data.category;
-          this.transaction.deleteTransaction('categories', id)
+          this.transaction.deleteCategory(id)
         }
 
     });

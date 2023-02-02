@@ -39,4 +39,8 @@ export class SidebarComponent implements OnInit {
     return element.classList.value == 'dark'
   }
 
+  public openSidebar(): void {
+    const e = document.getElementById('default-sidebar')!;
+    e?.classList.toggle('-translate-x-full')
+  }
 }

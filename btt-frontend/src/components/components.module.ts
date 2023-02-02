@@ -1,18 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './sidebar/sidebar.component';
-
+import { TableComponent } from './table/table.component';
+import { SharedModuleModule } from 'src/app/shared-module/shared-module.module';
+import { DialogComponent } from './dialog/dialog.component';
 
 
 @NgModule({
   declarations: [
-    SidebarComponent
+    SidebarComponent,
+    TableComponent,
+    DialogComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModuleModule
   ],
   exports: [
-    SidebarComponent
+    SidebarComponent,
+    TableComponent,
+    DialogComponent
   ]
 })
 export class ComponentsModule { }

@@ -5,11 +5,11 @@ import { Categories } from 'src/modules/entities/categories';
 
 
 @Component({
-  selector: 'app-category-dialog',
-  templateUrl: './category-dialog.component.html',
-  styleUrls: ['./category-dialog.component.scss']
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss']
 })
-export class CategoryDialogComponent implements OnInit {
+export class DialogComponent implements OnInit {
 
   form!: FormGroup;
   category: FormControl = new FormControl('');
@@ -19,7 +19,7 @@ export class CategoryDialogComponent implements OnInit {
   categories: Categories[] = []
   request!: string
 
-  constructor(private dialog: MatDialogRef<CategoryDialogComponent>,
+  constructor(private dialog: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.form = new FormGroup({
       name: this.name,
