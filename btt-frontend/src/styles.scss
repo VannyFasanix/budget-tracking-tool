@@ -50,7 +50,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 mat-dialog-container {
-  background-color: white !important;
+  background-color: white;
 }
 
 .bg-default {
@@ -73,4 +73,8 @@ mat-dialog-container {
 
 .href-text {
   color: #34A853;
+}
+
+.bag-dark {
+  background-color: rgba(17, 24, 39) !important
 }

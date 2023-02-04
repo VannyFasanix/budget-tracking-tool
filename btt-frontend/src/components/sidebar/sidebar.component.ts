@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'src/modules/entities/menuItem';
 import { ConfigService } from 'src/modules/services/config.service';
 
 @Component({
@@ -10,7 +11,13 @@ export class SidebarComponent implements OnInit {
 
   constructor(private config: ConfigService) { }
 
+  darkTheme: boolean = true;
+  menu: MenuItem[] | any = [];
+  title: string = "";
+
   ngOnInit(): void {
+    this.title = this.config.title;
+    this.menu = this.config.menu;
   }
 
   public changeFlag(flag: string) {
@@ -32,6 +39,8 @@ export class SidebarComponent implements OnInit {
 
     const style = document.documentElement.style.setProperty('$bg-screen-color',"--tw-bg-opacity: 1; background-color: rgba(17, 24, 39, var(--tw-bg-opacity))");
 
+    this.darkTheme = this.checkTheme()
+    this.config.darkTheme = this.darkTheme;
   }
 
   public checkTheme(): boolean {

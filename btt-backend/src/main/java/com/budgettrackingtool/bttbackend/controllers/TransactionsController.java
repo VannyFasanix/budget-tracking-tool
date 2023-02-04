@@ -1,12 +1,16 @@
 package com.budgettrackingtool.bttbackend.controllers;
 
+import com.budgettrackingtool.bttbackend.configs.AppConfig;
 import com.budgettrackingtool.bttbackend.entities.transactions.Category;
 import com.budgettrackingtool.bttbackend.entities.transactions.Expense;
+import com.budgettrackingtool.bttbackend.entities.transactions.Transactions;
 import com.budgettrackingtool.bttbackend.exceptions.InvalidParametersException;
 import com.budgettrackingtool.bttbackend.exceptions.NotFoundException;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryCategories;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryExpenses;
+import com.budgettrackingtool.bttbackend.servicies.TransactionsService;
 import jakarta.persistence.PostUpdate;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,44 +19,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 public class TransactionsController {
 
     @Autowired
-    private RepositoryExpenses repositoryE;
-
-    @Autowired
-    private RepositoryCategories repositoryC;
+    private TransactionsService transactionsSvc;
 
 
     //EXPENSES
     @GetMapping("/expenses/{id}")
     Expense singleExpense(@PathVariable Long id) {
 
-        Expense expense = repositoryE.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "expense"));
+        Expense expense = transactionsSvc.getExpenseById(id);
 
         return expense;
     }
 
-    @GetMapping("/expenses")
+    @GetMapping("/expenses/master")
     List<Expense> everyExpense() {
-
-        List<Expense> expenses = repositoryE.findAll();
-
-        return expenses;
+        return transactionsSvc.getExpenses();
     }
 
     @PostMapping("/expenses")
-    public Expense postNewCategory(@RequestBody Expense e) {
-        return repositoryE.save(e);
+    public ResponseEntity postNewCategory(@RequestBody Expense e) {
+        return transactionsSvc.saveExpense(e);
     }
 
 
@@ -60,55 +52,40 @@ public class TransactionsController {
     @GetMapping("/categories/{id}")
     Category singleCategory(@PathVariable Long id) {
 
-        Category category = repositoryC.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "category"));
+        Category category = transactionsSvc.getCategoryById(id);
 
         return category;
     }
 
 
-    @GetMapping("/categories")
+    @GetMapping("/categories/master")
     List<Category> everyCategory() {
 
-        List<Category> categories = repositoryC.findAll();
+        List<Category> categories = transactionsSvc.getCategories();
 
         return categories;
     }
 
     @PostMapping("/categories")
     public ResponseEntity postNewCategory(@RequestBody Category c) {
-
-        if(c.getName() == "") {
-            return new ResponseEntity<>("Invalid parameters provided for entity Category", HttpStatus.BAD_REQUEST);
-        }
-
-        repositoryC.save(c);
-        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
-
+        return transactionsSvc.saveCategory(c);
     }
 
 
     @PutMapping("/categories/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable long id,@RequestBody Category category) {
-        Category updateCategory = repositoryC.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "category"));
-
-        updateCategory.setName(category.getName());
-        updateCategory.setNotes(category.getNotes());
-
-        repositoryC.save(updateCategory);
-
-        return ResponseEntity.ok(updateCategory);
+        return transactionsSvc.updateCategory(id,category);
     }
 
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Category> deleteCategory(@PathVariable long id) {
-        Category deleteCategory = repositoryC.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "category"));
+        return transactionsSvc.deleteExpense(id);
+    }
 
-        repositoryC.deleteById(id);
+    @GetMapping("/transactions/master")
+    public Transactions getTransactions() {
 
-        return ResponseEntity.ok(deleteCategory);
+        return transactionsSvc.getTransactions();
     }
 
 }

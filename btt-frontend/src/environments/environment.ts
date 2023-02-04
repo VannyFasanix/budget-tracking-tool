@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  title: 'Budget Tracking Tool',
   url: "http://localhost:8080/" //atm
 };
 

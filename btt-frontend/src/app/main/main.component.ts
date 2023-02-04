@@ -13,6 +13,8 @@ export class MainComponent implements OnInit {
               private transaction: TransactionsService) { }
 
   selectedFlag: string = 'dashboard';
+  menu: boolean = false;
+  transactions: boolean = false;
 
   ngOnInit(): void {
 
@@ -20,8 +22,21 @@ export class MainComponent implements OnInit {
       this.selectedFlag = flag;
     })
 
-    this.transaction.setupTransactions();
+    this.load()
 
+  }
+
+  public async load(): Promise<void> {
+
+    return new Promise<void>((resolve, reject) => {
+      Promise.all([this.transaction.setupTransactions(), this.config.setupMenu()]).then((res: any) => {
+        this.menu = true;
+        this.transactions = true;
+        resolve()
+      }).catch((err) => {
+        reject(err);
+      })
+    })
   }
 
 }

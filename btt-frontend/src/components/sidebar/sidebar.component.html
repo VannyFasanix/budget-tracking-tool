@@ -9,11 +9,21 @@
   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
      <ul class="space-y-2">
         <li class="py-2 dark:text-white">
-          <span class="ml-3">Budget Tracking Tool</span>
+          <span class="ml-3">{{title}}</span>
         </li>
-        <li>
+        <li *ngFor="let item of menu">
+          <a (click)="changeFlag(item.flag)" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
+            <mat-icon class="material-symbols-outlined href-text">
+              {{item.icon}}
+            </mat-icon>
+            <span class="ml-3">{{item.name}}</span>
+          </a>
+        </li>
+        <!-- <li>
            <a class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
-              <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="#34A853" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+              <mat-icon class="material-symbols-outlined href-text">
+                pie_chart
+                </mat-icon>
               <span class="ml-3">Dashboard</span>
            </a>
         </li>
@@ -44,19 +54,19 @@
            </a>
         </li>
         <li>
-          <a (click)="changeFlag('categories-setup')" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
+          <a (click)="changeFlag('categories-table')" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-white dark:hover:bg-gray-700 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#34A853" class="w-6 h-6">
               <path fill-rule="evenodd" d="M5.25 2.25a3 3 0 00-3 3v4.318a3 3 0 00.879 2.121l9.58 9.581c.92.92 2.39 1.186 3.548.428a18.849 18.849 0 005.441-5.44c.758-1.16.492-2.629-.428-3.548l-9.58-9.581a3 3 0 00-2.122-.879H5.25zM6.375 7.5a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" clip-rule="evenodd" />
             </svg>
             <span class="flex-1 ml-3 whitespace-nowrap">Setup Categories</span>
           </a>
-        </li>
+        </li> -->
      </ul>
      <a (click)="switchTheme()" class="flex items-center z-0 p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-white dark:hover:bg-gray-700 cursor-pointer align-bottom absolute bottom-4">
-      <svg *ngIf="!checkTheme()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcba03" class="w-6 h-6">
+      <svg *ngIf="!darkTheme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcba03" class="w-6 h-6">
         <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
       </svg>
-      <svg *ngIf="checkTheme()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcba03" class="w-6 h-6">
+      <svg *ngIf="darkTheme" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcba03" class="w-6 h-6">
         <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
       </svg>
       <span class="flex-1 ml-3 whitespace-nowrap">Change theme</span>

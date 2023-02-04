@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { EventEmitter } from '@angular/core'
 
 @Component({
   selector: 'app-table',
@@ -11,6 +12,8 @@ export class TableComponent implements OnInit {
   @Input() entities!: {headers: any[], rows: any[]};
   @Input() edit: boolean = false;
   @Input() sortByDate: boolean = true;
+
+  @Output() update: EventEmitter<{entity: any, operation: string}> = new EventEmitter()
 
   keys: any[] = []
   searchString: FormControl = new FormControl('');
@@ -57,6 +60,10 @@ export class TableComponent implements OnInit {
 
   public getVal(val: any) {
     return val instanceof Object ? val.name : val
+  }
+
+  public updateDialog(entity: any, operation: string) {
+    this.update.emit({entity, operation})
   }
 
 }

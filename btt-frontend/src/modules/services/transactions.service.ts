@@ -22,8 +22,22 @@ export class TransactionsService {
               }
 
   public setupTransactions(): any {
-    this.getCategories();
-    this.getExpenses();
+    return new Promise<any>((resolve, reject) => {
+      this.getTransactions().subscribe({
+        next: (res: any) => {
+          this.categories = res.categories;
+          this.expenses = res.expenses;
+          resolve(true);
+        },
+        error: (err: any) => {
+          reject(err);
+        }
+      });
+    })
+  }
+
+  public getTransactions(): Observable<any>  {
+    return this.http.get(this.config.url+'transactions/master')
   }
 
   public postCategory(body: Categories | Expenses) {
@@ -33,13 +47,13 @@ export class TransactionsService {
   }
 
   public getCategories(): any {
-    this.http.get(this.config.url+'categories').subscribe((res: any) => {
+    this.http.get(this.config.url+'categories/master').subscribe((res: any) => {
       this.categories = res
     })
   }
 
   public getExpenses(): any {
-    this.http.get(this.config.url+'expenses').subscribe((res: any) => {
+    this.http.get(this.config.url+'expenses/master').subscribe((res: any) => {
       this.expenses = res
     })
   }

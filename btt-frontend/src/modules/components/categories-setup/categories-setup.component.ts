@@ -65,5 +65,7 @@ export class CategoriesSetupComponent implements OnInit {
     });
   }
 
-
+  public updateEntity(e: any) {
+    this.openCategoryDialog(e)
+  }
 }
