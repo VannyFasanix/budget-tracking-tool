@@ -13,7 +13,7 @@ public class ConfigService {
 
     @Autowired
     private RepositoryMenu repositoryMenu;
-    
+
     public List<MenuItem> getMenuItems() {
         return repositoryMenu.findAll();
     }

@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ExpensesTableComponent } from './components/expenses-table/expenses-table.component';
 import { IncomesTableComponent } from './components/incomes-table/incomes-table.component'
 import { HttpClientModule } from '@angular/common/http';
-import { CategoriesSetupComponent } from './components/categories-setup/categories-setup.component';
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { SharedModuleModule } from 'src/app/shared-module/shared-module.module';
 import { ComponentsModule } from 'src/components/components.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 
@@ -13,7 +14,8 @@ import { ComponentsModule } from 'src/components/components.module';
   declarations: [
     ExpensesTableComponent,
     IncomesTableComponent,
-    CategoriesSetupComponent
+    CategoriesTableComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { ComponentsModule } from 'src/components/components.module';
   exports: [
     ExpensesTableComponent,
     IncomesTableComponent,
-    CategoriesSetupComponent
+    CategoriesTableComponent,
+    DashboardComponent
   ]
 })
 export class ModulesModule { }

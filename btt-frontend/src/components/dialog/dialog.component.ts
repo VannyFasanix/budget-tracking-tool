@@ -13,23 +13,29 @@ import { ConfigService } from 'src/modules/services/config.service';
 export class DialogComponent implements OnInit {
 
   form!: FormGroup;
-  category: FormControl = new FormControl('');
-  name: FormControl = new FormControl('');
-  notes: FormControl = new FormControl('');
+  request!: string;
 
-  request!: string
+  //FORMS
+  name: FormControl = new FormControl('')
+  notes: FormControl = new FormControl('')
 
   constructor(private config: ConfigService,
               private dialog: MatDialogRef<DialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.form = new FormGroup({
-      name: this.name,
-      notes: this.notes
-    })
+      this.form = new FormGroup({
+        name: this.name,
+        notes: this.notes
+      })
    }
 
   ngOnInit(): void {
+
     this.request = this.data.request
+
+    if(this.data.type == 'category' && this.request == 'update') {
+      this.name.setValue(this.data.entities.name)
+      this.notes.setValue(this.data.entities.notes)
+    }
 
     this._checkTheme();
   }
@@ -41,7 +47,7 @@ export class DialogComponent implements OnInit {
 
   public save(): void {
     const data = this.form.getRawValue();
-    this.dialog.close({request: this.request, data: data})
+    this.dialog.close({id: this.data.id, request: this.request, data: data})
   }
 
 }

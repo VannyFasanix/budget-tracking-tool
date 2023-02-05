@@ -3,14 +3,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { Categories } from 'src/modules/entities/categories';
 import { TransactionsService } from 'src/modules/services/transactions.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-categories-setup',
-  templateUrl: './categories-setup.component.html',
-  styleUrls: ['./categories-setup.component.scss']
+  selector: 'app-categories-table',
+  templateUrl: './categories-table.component.html',
+  styleUrls: ['./categories-table.component.scss']
 })
-export class CategoriesSetupComponent implements OnInit {
+export class CategoriesTableComponent implements OnInit {
 
   categories: Categories[] = [];
   tableEntities!: {headers: any[], rows: any[]};
@@ -32,7 +33,7 @@ export class CategoriesSetupComponent implements OnInit {
     }
   }
 
-  public openCategoryDialog(option: string) {
+  public openCategoryDialog(option: any) {
 
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '400px',
@@ -41,8 +42,10 @@ export class CategoriesSetupComponent implements OnInit {
       disableClose: false,
       panelClass: 'mat-dialog-custom-white',
       data: {
-        categories: option != 'add' ? this.categories : [],
-        request: option
+        type: 'category',
+        id: option.id,
+        entities: option.operation == 'update' ? option.entities : this.categories ? this.categories : [],
+        request: option.operation
       }
     });
 
@@ -51,7 +54,7 @@ export class CategoriesSetupComponent implements OnInit {
         if(result.request == 'add') {
           this.transaction.postCategory(result.data)
         } else if(result.request == 'update') {
-          const id = result.data.category;
+          const id = result.id;
           const body = {
             name: result.data.name,
             notes: result.data.notes

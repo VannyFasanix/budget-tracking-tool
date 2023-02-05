@@ -13,7 +13,7 @@ export class TableComponent implements OnInit {
   @Input() edit: boolean = false;
   @Input() sortByDate: boolean = true;
 
-  @Output() update: EventEmitter<{entity: any, operation: string}> = new EventEmitter()
+  @Output() update: EventEmitter<{id: number, entities: any, operation: string}> = new EventEmitter()
 
   keys: any[] = []
   searchString: FormControl = new FormControl('');
@@ -44,7 +44,7 @@ export class TableComponent implements OnInit {
 
     this.entities.rows.map((row: any) => {
       this.keys.map((key: string) => {
-        if(row[key].toUpperCase().includes(s.toUpperCase())) {
+        if(typeof row[key] === 'string' && row[key]?.toUpperCase()?.includes(s?.toUpperCase())) {
           newRows.push(row)
         }
       })
@@ -62,8 +62,8 @@ export class TableComponent implements OnInit {
     return val instanceof Object ? val.name : val
   }
 
-  public updateDialog(entity: any, operation: string) {
-    this.update.emit({entity, operation})
+  public updateDialog(id: number, entities: any, operation: string) {
+    this.update.emit({id, entities, operation})
   }
 
 }

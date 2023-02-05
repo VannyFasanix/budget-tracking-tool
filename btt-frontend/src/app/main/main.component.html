@@ -1,11 +1,12 @@
-<div class="w-full h-full grid gap-4 grid-cols-7 mx-auto bg-white dark:bg-gray-900">
+<div class="w-full h-full grid grid-cols-2 gap-4 md:grid-cols-7 mx-auto overflow-auto bg-white dark:bg-gray-900">
   <app-sidebar *ngIf="menu" class="col-auto"></app-sidebar>
 
   <!-- ROUTES -->
 
-  <div *ngIf="transactions" class="py-10 col-span-6 pr-5 ">
+  <div *ngIf="transactions" class="py-10 col-span-6 mr-2 ml-2 ">
+    <app-dashboard *ngIf="selectedFlag=='dashboard'"></app-dashboard>
     <app-expenses-table *ngIf="selectedFlag == 'expenses-table'"></app-expenses-table>
     <app-incomes-table *ngIf="selectedFlag == 'incomes-table'"></app-incomes-table>
-    <app-categories-setup *ngIf="selectedFlag == 'categories-table'"></app-categories-setup>
+    <app-categories-table *ngIf="selectedFlag == 'categories-table'"></app-categories-table>
   </div>
 </div>
