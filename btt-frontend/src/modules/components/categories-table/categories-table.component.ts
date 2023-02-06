@@ -44,8 +44,8 @@ export class CategoriesTableComponent implements OnInit {
       data: {
         type: 'category',
         id: option.id,
-        entities: option.operation == 'update' ? option.entities : this.categories ? this.categories : [],
-        request: option.operation
+        entities: this._manageEntities(option),
+        request: option?.operation ? option.operation : option
       }
     });
 
@@ -66,6 +66,18 @@ export class CategoriesTableComponent implements OnInit {
         }
 
     });
+  }
+
+  private _manageEntities(option: any) {
+    let entities: any;
+
+     if(option.operation == 'update') {
+      entities = option.entities ? option.entities : this.categories ? this.categories : []
+    } else if (option.operation == 'delete') {
+      entities = this.categories
+    }
+
+    return entities
   }
 
   public updateEntity(e: any) {

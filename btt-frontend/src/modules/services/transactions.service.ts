@@ -40,7 +40,7 @@ export class TransactionsService {
     return this.http.get(this.config.url+'transactions/master')
   }
 
-  public postCategory(body: Categories | Expenses) {
+  public postCategory(body: any) {
     this.http.post(this.config.url+"categories", body).subscribe((res: any) => {
       this._categoriesModified.next(true)
     })
