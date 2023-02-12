@@ -1,12 +1,12 @@
 <!-- CATEGORIES -->
-<form [formGroup]="form" (ngSubmit)="save()" class="grid gap-6 mb-6 bg-white dark:bg-gray-900">
+<form [formGroup]="form" *ngIf="data.type == 'category'" (ngSubmit)="save()" class="grid gap-6 mb-6 bg-white dark:bg-gray-900">
 
-  <div *ngIf="request != 'delete'">
+  <div>
       <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
       <input type="text" [formControl]="name" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
   </div>
 
-  <div *ngIf="request != 'delete'">
+  <div>
     <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
     <input type="text" [formControl]="notes" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
 </div>
@@ -15,5 +15,36 @@
 </form>
 
 <!-- EXPENSES -->
+<form [formGroup]="form" *ngIf="data.type == 'expense'" (ngSubmit)="save()" class="grid gap-6 mb-6 bg-white dark:bg-gray-900">
+
+  <div>
+      <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+      <input type="text" [formControl]="date" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
+  </div>
+
+  <div>
+    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
+    <input type="text" [formControl]="amount" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
+  </div>
+
+  <div>
+    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Store</label>
+    <input type="text" [formControl]="store" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
+  </div>
+
+  <div>
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+    <select [formControl]="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option *ngFor="let e of categories" [value]="e.id">{{e.name}}</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+    <input type="text" [formControl]="notes" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Travel" required>
+  </div>
+
+  <button (click)="save()" type="submit" class="text-white bg-default  focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-default dark:focus:ring-green-800">Submit</button>
+</form>
 
 <!-- INCOMES -->

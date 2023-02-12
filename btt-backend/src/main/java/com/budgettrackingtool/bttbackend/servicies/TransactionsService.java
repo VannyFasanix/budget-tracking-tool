@@ -30,26 +30,7 @@ public class TransactionsService {
         return new Transactions(expenses, categories);
     }
 
-    public List<Expense> getExpenses() {
-        List<Expense> expenses = repositoryE.findAll();
-        return expenses;
-    }
-
-    public ResponseEntity saveExpense(Expense e) {
-        if(e.getAmount() == null || e.getAmount() <= 0 ) {
-            return new ResponseEntity<>("Invalid parameters provided for entity Category", HttpStatus.BAD_REQUEST);
-        }
-
-        repositoryE.save(e);
-        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
-    }
-
-    public Expense getExpenseById(Long id) {
-        Expense expense = repositoryE.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "expense"));
-
-        return expense;
-    }
+    //CATEGORIES
 
     public Category getCategoryById(Long id) {
         Category category = repositoryC.findById(id)
@@ -70,7 +51,7 @@ public class TransactionsService {
         }
 
         repositoryC.save(c);
-        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
+        return new ResponseEntity<>("post executed successfully", HttpStatus.OK);
     }
 
     public ResponseEntity updateCategory(Long id, Category category) {
@@ -85,7 +66,7 @@ public class TransactionsService {
         return ResponseEntity.ok(updateCategory);
     }
 
-    public ResponseEntity deleteExpense(Long id) {
+    public ResponseEntity deleteCategory(Long id) {
         Category deleteCategory = repositoryC.findById(id)
                 .orElseThrow(() -> new NotFoundException(id, "category"));
 
@@ -93,5 +74,82 @@ public class TransactionsService {
 
         return ResponseEntity.ok(deleteCategory);
     }
+
+    public ResponseEntity deleteCategories(List<Long> ids) {
+        int i = 0;
+        for(i = 0; i < ids.size(); i++) {
+            int finalI = i;
+            Category deleteCategory = repositoryC.findById(ids.get(i))
+                    .orElseThrow(() -> new NotFoundException(ids.get(finalI), "category"));
+        }
+
+        repositoryC.deleteAllById(ids);
+
+        return ResponseEntity.ok(ids);
+    }
+
+    //EXPENSES
+
+    public List<Expense> getExpenses() {
+        List<Expense> expenses = repositoryE.findAll();
+        return expenses;
+    }
+
+    public Expense getExpenseById(Long id) {
+        Expense expense = repositoryE.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "expense"));
+
+        return expense;
+    }
+
+    public ResponseEntity saveExpense(Expense e) {
+        if(e.getAmount() == null || e.getAmount() <= 0 ) {
+            return new ResponseEntity<>("Invalid parameters provided for entity Expense", HttpStatus.BAD_REQUEST);
+        }
+
+        repositoryE.save(e);
+        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
+    }
+
+    public ResponseEntity updateExpense(Long id, Expense expense) {
+        Expense updateExpense = repositoryE.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "expense"));
+
+        updateExpense.setAmount(expense.getAmount());
+        updateExpense.setDate(expense.getDate());
+        updateExpense.setCategory(expense.getCategory());
+        updateExpense.setStore(expense.getStore());
+        updateExpense.setNotes(expense.getNotes());
+
+
+
+        repositoryE.save(updateExpense);
+
+        return ResponseEntity.ok(updateExpense);
+    }
+
+    public ResponseEntity deleteExpense(Long id) {
+        Expense deleteExpense = repositoryE.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "expense"));
+
+        repositoryE.deleteById(id);
+
+        return ResponseEntity.ok(deleteExpense);
+    }
+
+    public ResponseEntity deleteExpenses(List<Long> ids) {
+        int i = 0;
+        for(i = 0; i < ids.size(); i++) {
+            int finalI = i;
+            Expense deleteExpense = repositoryE.findById(ids.get(i))
+                    .orElseThrow(() -> new NotFoundException(ids.get(finalI), "expense"));
+        }
+
+        repositoryE.deleteAllById(ids);
+
+        return ResponseEntity.ok(ids);
+    }
+
+
 
 }

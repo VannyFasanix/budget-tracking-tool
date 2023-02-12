@@ -15,6 +15,7 @@ export class CategoriesTableComponent implements OnInit {
 
   categories: Categories[] = [];
   tableEntities!: {headers: any[], rows: any[]};
+  checkboxes: {id: boolean}[] = [];
 
   constructor(private transaction: TransactionsService,
               public dialog: MatDialog) { }
@@ -25,6 +26,11 @@ export class CategoriesTableComponent implements OnInit {
 
     this.transaction.categoriesModified.subscribe((res: boolean) => {
       this.categories = this.transaction.categories;
+
+      this.tableEntities = {
+        headers: Object.keys(this.categories[0]),
+        rows: this.categories
+      }
     })
 
     this.tableEntities = {
@@ -81,6 +87,39 @@ export class CategoriesTableComponent implements OnInit {
   }
 
   public updateEntity(e: any) {
-    this.openCategoryDialog(e)
+    if(e instanceof Array) {
+      this.checkboxes = e;
+    } else {
+      this.openCategoryDialog(e)
+    }
+  }
+
+  public deleteCategories() {
+    let ids: number[] = []
+    this.checkboxes.map((e: any, i: number) => {
+      if(e.checked)
+        ids.push(this.categories[i].id)
+    })
+
+    this.transaction.deleteCategories(ids)
+  }
+
+  public canDelete() {
+    let deletableCategories: number = 0;
+    this.checkboxes.map((e: any, i: number) => {
+      if(e.checked)
+        deletableCategories++
+    })
+
+    const e = document.getElementById('delete')!
+    if(deletableCategories == 0) {
+      if(e) {
+        e.classList.add('disabledBtn')
+      }
+    } else {
+      e.classList.remove('disabledBtn')
+    }
+
+    return deletableCategories == 0
   }
 }

@@ -16,10 +16,20 @@ export class ExpensesTableComponent implements OnInit {
 
   tableEntities!: {headers: any[], rows: any[]};
   expenses: any[] = [];
+  checkboxes: {id: boolean}[] = [];
 
   ngOnInit(): void {
 
     this.expenses = this.transaction.expenses;
+
+    this.transaction.expensesModified.subscribe((res: boolean) => {
+      this.expenses = this.transaction.expenses;
+
+      this.tableEntities = {
+        headers: Object.keys(this.expenses[0]),
+        rows: this.expenses
+      }
+    })
 
     this.tableEntities = {
       headers: Object.keys(this.expenses[0]),
@@ -27,37 +37,91 @@ export class ExpensesTableComponent implements OnInit {
     }
   }
 
-  public openCategoryDialog(option: string) {
+  public openExpensesDialog(option: any) {
 
     const dialogRef = this.dialog.open(DialogComponent, {
-      height: '400px',
+      height: '600px',
       width: '500px',
       hasBackdrop: true,
       disableClose: false,
       panelClass: 'mat-dialog-custom-white',
       data: {
-        categories: option != 'add' ? this.expenses : [],
-        request: option
+        type: 'expense',
+        id: option.id,
+        entities: this._manageEntities(option),
+        request: option?.operation ? option.operation : option
       }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result)
         if(result.request == 'add') {
-          this.transaction.postCategory(result.data)
+          this.transaction.postExpense(result.data)
         } else if(result.request == 'update') {
-          const id = result.data.category;
+          const id = result.id;
           const body = {
-            name: result.data.name,
+            date: result.data.date,
+            category: result.data.category,
+            store: result.data.store,
+            amount: result.data.amount,
             notes: result.data.notes
           }
-          this.transaction.updateCategory(id, body)
+          this.transaction.updateExpense(id, body)
         } else if(result.request == 'delete') {
-          const id = result.data.category;
-          this.transaction.deleteCategory(id)
+          const id = result.data.expense;
+          this.transaction.deleteExpense(id)
         }
 
     });
+  }
+
+  public updateEntity(e: any) {
+    if(e instanceof Array) {
+      this.checkboxes = e;
+    } else {
+      this.openExpensesDialog(e)
+    }
+  }
+
+  public deleteExpense() {
+    let ids: number[] = []
+    this.checkboxes.map((e: any, i: number) => {
+      if(e.checked)
+        ids.push(this.expenses[i].id)
+    })
+
+    this.transaction.deleteExpenses(ids)
+  }
+
+  private _manageEntities(option: any) {
+    let entities: any;
+
+     if(option.operation == 'update') {
+      entities = option.entities ? option.entities : this.expenses ? this.expenses : []
+    } else if (option.operation == 'delete') {
+      entities = this.expenses
+    }
+
+    return entities
+  }
+
+  public canDelete() {
+    let deletableExpenses: number = 0;
+    this.checkboxes.map((e: any, i: number) => {
+      if(e.checked)
+      deletableExpenses++
+    })
+
+    const e = document.getElementById('delete')!
+    if(deletableExpenses == 0) {
+      if(e) {
+        e.classList.add('disabledBtn')
+      }
+    } else {
+      e.classList.remove('disabledBtn')
+    }
+
+    return deletableExpenses == 0
   }
 
 }

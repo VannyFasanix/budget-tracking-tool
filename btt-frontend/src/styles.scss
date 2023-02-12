@@ -78,3 +78,8 @@ mat-dialog-container {
 .bag-dark {
   background-color: rgba(17, 24, 39) !important
 }
+
+.disabledBtn {
+  background-color: gray !important;
+  cursor: default;
+}

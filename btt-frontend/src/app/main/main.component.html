@@ -3,7 +3,7 @@
 
   <!-- ROUTES -->
 
-  <div *ngIf="transactions" class="py-10 col-span-6 mr-2 ml-2 h-full overflow-auto">
+  <div *ngIf="transactions" class="py-10 col-span-6 mr-2 ml-2 overflow-auto">
     <app-dashboard *ngIf="selectedFlag=='dashboard'"></app-dashboard>
     <app-expenses-table *ngIf="selectedFlag == 'expenses-table'"></app-expenses-table>
     <app-incomes-table *ngIf="selectedFlag == 'incomes-table'"></app-incomes-table>
