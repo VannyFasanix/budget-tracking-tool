@@ -7,9 +7,12 @@ public class Transactions {
     private List<Expense> expenses;
     private List<Category> categories;
 
-    public Transactions(List<Expense> expenses, List<Category> categories) {
+    private List<Income> incomes;
+
+    public Transactions(List<Expense> expenses, List<Category> categories, List<Income> incomes) {
         this.expenses = expenses;
         this.categories = categories;
+        this.incomes = incomes;
     }
 
     public List<Expense> getExpenses() {

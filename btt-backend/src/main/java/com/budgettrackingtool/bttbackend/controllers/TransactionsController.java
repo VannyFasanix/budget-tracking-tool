@@ -3,6 +3,7 @@ package com.budgettrackingtool.bttbackend.controllers;
 import com.budgettrackingtool.bttbackend.configs.AppConfig;
 import com.budgettrackingtool.bttbackend.entities.transactions.Category;
 import com.budgettrackingtool.bttbackend.entities.transactions.Expense;
+import com.budgettrackingtool.bttbackend.entities.transactions.Income;
 import com.budgettrackingtool.bttbackend.entities.transactions.Transactions;
 import com.budgettrackingtool.bttbackend.exceptions.InvalidParametersException;
 import com.budgettrackingtool.bttbackend.exceptions.NotFoundException;
@@ -109,4 +110,39 @@ public class TransactionsController {
         return transactionsSvc.deleteExpenses(ids);
     }
 
+    //INCOMES
+
+    @GetMapping("/incomes/{id}")
+    Income singleIncome(@PathVariable Long id) {
+
+        Income income = transactionsSvc.getIncomeById(id);
+
+        return income;
+    }
+
+    @GetMapping("/incomes/master")
+    List<Income> everyIncome() {
+        return transactionsSvc.getIncomes();
+    }
+
+    @PostMapping("/incomes")
+    public ResponseEntity postNewIncome(@RequestBody Income i) {
+        return transactionsSvc.saveIncome(i);
+    }
+
+    @PutMapping("/incomes/{id}")
+    public ResponseEntity<Income> updateIncome(@PathVariable long id,@RequestBody Income income) {
+        return transactionsSvc.updateIncome(id,income);
+    }
+
+    @DeleteMapping("/incomes/{id}")
+    public ResponseEntity<Income> deleteIncome(@PathVariable long id) {
+        return transactionsSvc.deleteIncome(id);
+    }
+
+
+    @DeleteMapping("/incomes")
+    public ResponseEntity<Income> deleteIncomeById(@RequestBody List<Long> ids) {
+        return transactionsSvc.deleteIncomes(ids);
+    }
 }

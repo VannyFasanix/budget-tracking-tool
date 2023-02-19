@@ -2,10 +2,12 @@ package com.budgettrackingtool.bttbackend.servicies;
 
 import com.budgettrackingtool.bttbackend.entities.transactions.Category;
 import com.budgettrackingtool.bttbackend.entities.transactions.Expense;
+import com.budgettrackingtool.bttbackend.entities.transactions.Income;
 import com.budgettrackingtool.bttbackend.entities.transactions.Transactions;
 import com.budgettrackingtool.bttbackend.exceptions.NotFoundException;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryCategories;
 import com.budgettrackingtool.bttbackend.repositories.RepositoryExpenses;
+import com.budgettrackingtool.bttbackend.repositories.RepositoryIncomes;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +25,15 @@ public class TransactionsService {
     @Autowired
     private RepositoryCategories repositoryC;
 
+    @Autowired
+    private RepositoryIncomes repositoryI;
+
     public Transactions getTransactions() {
         List<Expense> expenses = repositoryE.findAll();
         List<Category> categories = repositoryC.findAll();
+        List<Income> incomes = repositoryI.findAll();
 
-        return new Transactions(expenses, categories);
+        return new Transactions(expenses, categories, incomes);
     }
 
     //CATEGORIES
@@ -150,6 +156,66 @@ public class TransactionsService {
         return ResponseEntity.ok(ids);
     }
 
+    //INCOMES
 
+    public List<Income> getIncomes() {
+        List<Income> incomes = repositoryI.findAll();
+        return incomes;
+    }
+
+    public Income getIncomeById(Long id) {
+        Income income = repositoryI.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "income"));
+
+        return income;
+    }
+
+    public ResponseEntity saveIncome(Income i) {
+        if(i.getAmount() == null || i.getAmount() <= 0 ) {
+            return new ResponseEntity<>("Invalid parameters provided for entity Income", HttpStatus.BAD_REQUEST);
+        }
+
+        repositoryI.save(i);
+        return new ResponseEntity<>("Post executed successfully", HttpStatus.OK);
+    }
+
+    public ResponseEntity updateIncome(Long id, Income income) {
+        Income updateIncome = repositoryI.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "income"));
+
+        updateIncome.setAmount(income.getAmount());
+        updateIncome.setDate(income.getDate());
+        updateIncome.setCategory(income.getCategory());
+        updateIncome.setSource(income.getSource());
+        updateIncome.setNotes(income.getNotes());
+
+
+
+        repositoryI.save(updateIncome);
+
+        return ResponseEntity.ok(updateIncome);
+    }
+
+    public ResponseEntity deleteIncome(Long id) {
+        Income deleteIncome = repositoryI.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "income"));
+
+        repositoryI.deleteById(id);
+
+        return ResponseEntity.ok(deleteIncome);
+    }
+
+    public ResponseEntity deleteIncomes(List<Long> ids) {
+        int i = 0;
+        for(i = 0; i < ids.size(); i++) {
+            int finalI = i;
+            Income deleteIncome = repositoryI.findById(ids.get(i))
+                    .orElseThrow(() -> new NotFoundException(ids.get(finalI), "income"));
+        }
+
+        repositoryI.deleteAllById(ids);
+
+        return ResponseEntity.ok(ids);
+    }
 
 }
