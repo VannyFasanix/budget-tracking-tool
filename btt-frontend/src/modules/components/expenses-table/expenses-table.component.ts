@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/components/dialog/dialog.component';
+import { Expenses } from 'src/modules/entities/expenses';
 import { TransactionsService } from 'src/modules/services/transactions.service';
 
 @Component({
@@ -14,16 +15,16 @@ export class ExpensesTableComponent implements OnInit {
   constructor(private transaction: TransactionsService,
               public dialog: MatDialog) { }
 
+  entityName: string = 'expenses'
   tableEntities!: {headers: any[], rows: any[]};
   expenses: any[] = [];
   checkboxes: {id: boolean}[] = [];
 
   ngOnInit(): void {
 
-    this.expenses = this.transaction.expenses;
-
-    this.transaction.expensesModified.subscribe((res: boolean) => {
-      this.expenses = this.transaction.expenses;
+    this.transaction.getT(this.entityName).subscribe((res: Expenses[]) => {
+      console.log(res)
+      this.expenses = res
 
       this.tableEntities = {
         headers: Object.keys(this.expenses[0]),
@@ -31,10 +32,6 @@ export class ExpensesTableComponent implements OnInit {
       }
     })
 
-    this.tableEntities = {
-      headers: Object.keys(this.expenses[0]),
-      rows: this.expenses
-    }
   }
 
   public openExpensesDialog(option: any) {
@@ -56,7 +53,12 @@ export class ExpensesTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result)
         if(result.request == 'add') {
-          this.transaction.postExpense(result.data)
+          if(result?.data?.category)
+            result.data.category = result.data.category.id
+
+          this.transaction.postT(this.entityName, result.data).subscribe((res: any) => {
+            console.log(res)
+          })
         } else if(result.request == 'update') {
           const id = result.id;
           const body = {
@@ -66,10 +68,14 @@ export class ExpensesTableComponent implements OnInit {
             amount: result.data.amount,
             notes: result.data.notes
           }
-          this.transaction.updateExpense(id, body)
+          this.transaction.updateT(this.entityName, id, body).subscribe((res: any) => {
+            console.log(res)
+          })
         } else if(result.request == 'delete') {
           const id = result.data.expense;
-          this.transaction.deleteExpense(id)
+          this.transaction.deleteT(this.entityName, id).subscribe((res: any) => {
+            console.log(res)
+          })
         }
 
     });
@@ -90,7 +96,7 @@ export class ExpensesTableComponent implements OnInit {
         ids.push(this.expenses[i].id)
     })
 
-    this.transaction.deleteExpenses(ids)
+    this.transaction.deleteT(this.entityName, ids)
   }
 
   private _manageEntities(option: any) {

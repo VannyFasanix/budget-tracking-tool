@@ -25,6 +25,6 @@
     </div>
   </div>
 
-  <app-table [entities]="tableEntities" (update)="updateEntity($event)" [edit]="true" [sortByDate]="true" [search]="true"></app-table>
+  <app-table *ngIf="tableEntities" [entities]="tableEntities" (update)="updateEntity($event)" [edit]="true" [sortByDate]="true" [search]="true"></app-table>
 </div>
 

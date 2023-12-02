@@ -13,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class CategoriesTableComponent implements OnInit {
 
+  entityName: string = 'categories'
   categories: Categories[] = [];
   tableEntities!: {headers: any[], rows: any[]};
   checkboxes: {id: boolean}[] = [];
@@ -22,21 +23,16 @@ export class CategoriesTableComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.categories = this.transaction.categories;
-
-    this.transaction.categoriesModified.subscribe((res: boolean) => {
-      this.categories = this.transaction.categories;
+    this.transaction.getT(this.entityName).subscribe((res: Categories[]) => {
+      console.log(res)
+      this.categories = res
 
       this.tableEntities = {
         headers: Object.keys(this.categories[0]),
         rows: this.categories
       }
-    })
+    });
 
-    this.tableEntities = {
-      headers: Object.keys(this.categories[0]),
-      rows: this.categories
-    }
   }
 
   public openCategoryDialog(option: any) {
@@ -58,17 +54,17 @@ export class CategoriesTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if(result)
         if(result.request == 'add') {
-          this.transaction.postCategory(result.data)
+          this.transaction.postT(this.entityName, result.data).subscribe((res: any) => console.log(res))
         } else if(result.request == 'update') {
           const id = result.id;
           const body = {
             name: result.data.name,
             notes: result.data.notes
           }
-          this.transaction.updateCategory(id, body)
+          this.transaction.updateT(this.entityName, id, body).subscribe((res: any) => console.log(res))
         } else if(result.request == 'delete') {
           const id = result.data.category;
-          this.transaction.deleteCategory(id)
+          this.transaction.deleteT(this.entityName, id).subscribe((res: any) => console.log(res))
         }
 
     });
@@ -101,7 +97,7 @@ export class CategoriesTableComponent implements OnInit {
         ids.push(this.categories[i].id)
     })
 
-    this.transaction.deleteCategories(ids)
+    this.transaction.deleteT(this.entityName, ids).subscribe((res: any) => console.log(res))
   }
 
   public canDelete() {
